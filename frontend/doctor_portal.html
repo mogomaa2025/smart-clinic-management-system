@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="getAppointments()">
+    <div class="container portal-container">
+        <h1>Doctor Portal - Today's Appointments</h1>
+        <div id="appointment-list">Loading appointments...</div>
+    </div>
+    <script>
+        async function getAppointments() {
+            const listDiv = document.getElementById('appointment-list');
+            const token = localStorage.getItem('doctor_jwt_token');
+            const doctorId = localStorage.getItem('doctor_id'); // Set during login
+
+            if (!token || !doctorId) {
+                listDiv.innerHTML = '<p style="color:red;">Could not find login information. Please log in again.</p>';
+                return;
+            }
+
+            try {
+                // This endpoint fetches appointments for the current day for the given doctor
+                const response = await fetch(`/api/appointments/doctor/${doctorId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    listDiv.innerHTML = '<h3>Your Appointments for Today</h3>';
+                    if (result.data.length === 0) {
+                        listDiv.innerHTML += '<p>No appointments scheduled for today.</p>';
+                        return;
+                    }
+                    result.data.forEach(appt => {
+                        const apptDiv = document.createElement('div');
+                        apptDiv.className = 'list-item';
+                        // The patient object is lazy-loaded, so we can't display the name directly here
+                        // A proper implementation would use DTOs to include patient name.
+                        const apptTime = new Date(appt.appointmentTime).toLocaleTimeString();
+                        apptDiv.innerHTML = `
+                            <p><strong>Time:</strong> ${apptTime}</p>
+                            <p><strong>Patient ID:</strong> ${appt.patient.id}</p>
+                        `;
+                        listDiv.appendChild(apptDiv);
+                    });
+                } else {
+                    listDiv.textContent = `Error: ${result.message || 'Could not fetch appointments.'}`;
+                    listDiv.style.color = 'red';
+                }
+            } catch (error) {
+                listDiv.textContent = `Fetch Error: ${error.message}`;
+                listDiv.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>

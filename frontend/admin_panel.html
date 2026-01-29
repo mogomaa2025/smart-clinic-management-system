@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container portal-container">
+        <h1>Admin Panel - Add Doctor</h1>
+        <div class="form-group">
+            <label for="name">Doctor Name</label>
+            <input type="text" id="name" value="Dr. Smith">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" value="dr.smith@clinic.com">
+        </div>
+        <div class="form-group">
+            <label for="speciality">Speciality</label>
+            <input type="text" id="speciality" value="Cardiology">
+        </div>
+        <button class="btn" onclick="addDoctor()">Add Doctor</button>
+        <div id="response"></div>
+    </div>
+    <script>
+        async function addDoctor() {
+            // This functionality is not fully implemented in the backend as per the main requirements,
+            // so this is a placeholder to demonstrate the frontend.
+            // A full implementation would require an authenticated endpoint.
+            const responseDiv = document.getElementById('response');
+            const name = document.getElementById('name').value;
+            responseDiv.textContent = `(Mock) Successfully added ${name} to the system.`;
+            responseDiv.style.color = 'green';
+        }
+    </script>
+</body>
+</html>

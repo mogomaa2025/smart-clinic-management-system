@@ -24,7 +24,7 @@
 
             try {
                 // This endpoint fetches appointments for the current day for the given doctor
-                const response = await fetch(`/api/appointments/doctor/${doctorId}`, {
+                const response = await fetch(`http://localhost:8081/api/appointments/doctor/${doctorId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -43,12 +43,10 @@
                     result.data.forEach(appt => {
                         const apptDiv = document.createElement('div');
                         apptDiv.className = 'list-item';
-                        // The patient object is lazy-loaded, so we can't display the name directly here
-                        // A proper implementation would use DTOs to include patient name.
                         const apptTime = new Date(appt.appointmentTime).toLocaleTimeString();
                         apptDiv.innerHTML = `
                             <p><strong>Time:</strong> ${apptTime}</p>
-                            <p><strong>Patient ID:</strong> ${appt.patient.id}</p>
+                            <p><strong>Patient:</strong> ${appt.patientName}</p>
                         `;
                         listDiv.appendChild(apptDiv);
                     });

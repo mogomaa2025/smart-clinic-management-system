@@ -1,8 +1,8 @@
 package com.coursera.clinic.controller;
 
+import com.coursera.clinic.dto.AppointmentDTO;
 import com.coursera.clinic.dto.ErrorResponse;
 import com.coursera.clinic.dto.SuccessResponse;
-import com.coursera.clinic.entity.Appointment;
 import com.coursera.clinic.entity.Patient;
 import com.coursera.clinic.repository.PatientRepository;
 import com.coursera.clinic.service.AppointmentService;
@@ -43,7 +43,7 @@ public class AppointmentController {
         }
 
         Patient patient = patientOpt.get();
-        List<Appointment> appointments = appointmentService.getAppointmentsForPatient(patient.getId());
+        List<AppointmentDTO> appointments = appointmentService.getAppointmentsForPatient(patient.getId());
         return ResponseEntity.ok(new SuccessResponse<>(appointments));
     }
 
@@ -54,7 +54,7 @@ public class AppointmentController {
             return new ResponseEntity<>(new ErrorResponse("Invalid or missing token"), HttpStatus.UNAUTHORIZED);
         }
         
-        List<Appointment> appointments = appointmentService.getAppointmentsForDoctorByDate(doctorId, java.time.LocalDate.now());
+        List<AppointmentDTO> appointments = appointmentService.getAppointmentsForDoctorByDate(doctorId, java.time.LocalDate.now());
         return ResponseEntity.ok(new SuccessResponse<>(appointments));
     }
 }

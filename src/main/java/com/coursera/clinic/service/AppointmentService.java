@@ -1,11 +1,13 @@
 package com.coursera.clinic.service;
 
+import com.coursera.clinic.dto.AppointmentDTO;
 import com.coursera.clinic.entity.Appointment;
 import com.coursera.clinic.entity.Doctor;
 import com.coursera.clinic.entity.Patient;
 import com.coursera.clinic.repository.AppointmentRepository;
 import com.coursera.clinic.repository.DoctorRepository;
 import com.coursera.clinic.repository.PatientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -52,18 +55,27 @@ public class AppointmentService {
     }
 
     /**
-     * Retrieves all appointments for a specific doctor on a given date.
+     * Retrieves all appointments for a specific doctor on a given date and maps them to DTOs.
+     * @Transactional is important here to keep the session open for lazy loading.
      */
-    public List<Appointment> getAppointmentsForDoctorByDate(Long doctorId, LocalDate date) {
+    @Transactional
+    public List<AppointmentDTO> getAppointmentsForDoctorByDate(Long doctorId, LocalDate date) {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
-        return appointmentRepository.findByDoctorIdAndDate(doctorId, startOfDay, endOfDay);
+        List<Appointment> appointments = appointmentRepository.findByDoctorIdAndDate(doctorId, startOfDay, endOfDay);
+        return appointments.stream()
+                .map(AppointmentDTO::new)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Retrieves all appointments for a specific patient.
+     * Retrieves all appointments for a specific patient and maps them to DTOs.
      */
-    public List<Appointment> getAppointmentsForPatient(Long patientId) {
-        return appointmentRepository.findByPatientId(patientId);
+    @Transactional
+    public List<AppointmentDTO> getAppointmentsForPatient(Long patientId) {
+        List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
+        return appointments.stream()
+                .map(AppointmentDTO::new)
+                .collect(Collectors.toList());
     }
 }

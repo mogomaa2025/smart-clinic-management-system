@@ -31,7 +31,7 @@
             try {
                 // A real app would use the name parameter, for now we just get all.
                 // The endpoint requires auth, but we'll use a public one for simplicity.
-                const response = await fetch('/api/doctors', {
+                const response = await fetch('http://localhost:8081/api/doctors', {
                     method: 'GET',
                     headers: { 
                         'Content-Type': 'application/json',

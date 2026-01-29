@@ -1,0 +1,4 @@
+Db,Name,Type,Definer,Modified,Created,Security_type,Comment,character_set_client,collation_connection,"Database Collation"
+smart_clinic_db,GetDailyAppointmentReportByDoctor,PROCEDURE,root@localhost,"2026-01-29 06:10:26","2026-01-29 06:10:26",DEFINER,,utf8mb4,utf8mb4_0900_ai_ci,utf8mb4_0900_ai_ci
+smart_clinic_db,GetDoctorWithMostPatientsByMonth,PROCEDURE,root@localhost,"2026-01-29 06:10:26","2026-01-29 06:10:26",DEFINER,,utf8mb4,utf8mb4_0900_ai_ci,utf8mb4_0900_ai_ci
+smart_clinic_db,GetDoctorWithMostPatientsByYear,PROCEDURE,root@localhost,"2026-01-29 06:10:26","2026-01-29 06:10:26",DEFINER,,utf8mb4,utf8mb4_0900_ai_ci,utf8mb4_0900_ai_ci
